@@ -1,11 +1,18 @@
-const rutas = require("express").Router();
-const { mostrarTareas, editarTarea, eliminarTarea, buscarTarea } = require("./controllers") 
-const { crearTarea } = require("./controllers") 
+import { Router } from "express"
 
-rutas.get("/tasks", mostrarTareas)
-rutas.get("/tasks/:id", buscarTarea)
-rutas.post("/tasks", crearTarea)
-rutas.put("/tasks/:id", editarTarea)
-rutas.delete("/tasks/:id", eliminarTarea)
+const tasksRouter = Router()
 
-module.exports = rutas
+import {
+    mostrarTareas,
+    buscarTarea,
+    crearTarea,
+    editarTarea,
+    eliminarTarea,
+} from "./controllers.js"
+tasksRouter.get("/tasks", mostrarTareas)
+tasksRouter.get("/tasks/:id", buscarTarea)
+tasksRouter.post("/tasks", crearTarea)
+tasksRouter.put("/tasks/:id", editarTarea)
+tasksRouter.delete("/tasks/:id", eliminarTarea)
+
+export { tasksRouter }

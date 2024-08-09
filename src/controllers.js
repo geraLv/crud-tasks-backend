@@ -1,8 +1,6 @@
-const crtl = {}
-const rutas = require("./router")
-const conectar = require("./database")
+import { conectar } from "./database.js"
 
-crtl.mostrarTareas = async(req, res)=>{
+export const mostrarTareas = async(req, res)=>{
     const conexion = await conectar();
     const [ consulta ] = await conexion.query('SELECT * FROM TASKS')
     if (consulta.length == []){
@@ -12,7 +10,7 @@ crtl.mostrarTareas = async(req, res)=>{
     }
 }
 
-crtl.crearTarea = async(req, res)=>{
+export const crearTarea = async(req, res)=>{
     const conexion = await conectar();
     const { title,description,isComplete } = req.body
     if(typeof(title) != "string"){
@@ -26,7 +24,7 @@ crtl.crearTarea = async(req, res)=>{
     res.send("Se creo una nueva tarea exitosamente") 
     }
 }
-crtl.editarTarea = async(req, res)=>{
+export const  editarTarea = async(req, res)=>{
     const conexion = await conectar();
     const { title,description,isComplete } = req.body
     const id = parseInt(req.params.id) 
@@ -39,7 +37,7 @@ crtl.editarTarea = async(req, res)=>{
     }
 }
 
-crtl.buscarTarea = async(req, res)=>{
+export const buscarTarea = async(req, res)=>{
     const conexion = await conectar();
     const id = parseInt(req.params.id)
     const {verificacion} = await conexion.query(`SELECT * FROM TASKS WHERE ID = ${parseInt(id)};`)
@@ -48,8 +46,8 @@ crtl.buscarTarea = async(req, res)=>{
     }else{const [ consulta ] = await conexion.query(`SELECT id, title, description, isComplete FROM TASKS where id = ${id}`)
     res.send(consulta)
         }
-    }
-crtl.eliminarTarea = async(req, res)=>{
+}
+export const eliminarTarea = async(req, res)=>{
     const conexion = await conectar();
     const id = parseInt(req.params.id)
     const [verificacion] = await conexion.query(`SELECT * FROM TASKS WHERE ID = ${id};`)
@@ -59,4 +57,3 @@ crtl.eliminarTarea = async(req, res)=>{
     res.send("Se elimino una tarea correctamente")
     }
 }
-module.exports = crtl
